@@ -1,0 +1,26 @@
+setwd("C:/Users/A/Desktop")
+q<-read.csv2("C:/Users/A/Desktop/features.csv",sep=",")
+a<-readLines("C:/Users/A/Desktop/factor.txt")
+covariate<-q[,471:512]
+response<-a[2:106575]
+response[which(response=="")]<-"NA"
+covariatee<-covariate[4:106577,]
+covar<-as.matrix(covariatee)
+zzz<-cbind(covar,response)
+zzzz<-zzz[-which(zzz[,43]=="NA"),]
+
+fac<-factor(zzzz[,43],levels = c("Hip-Hop","Pop","Rock","Experimental","Folk","Jazz","Electronic",
+"International","Soul-RnB","Spoken","Blues","Country",
+"Classical","Old-Time/Historic","Instrumental"))
+e<-as.numeric(fac)
+trans<-function(dataa){
+d<-matrix(rep(0,nrow(dataa)*(ncol(dataa))),nrow(dataa))
+for(i in 1:ncol(dataa)){
+d[,i]<-as.numeric(dataa[,i])
+}
+return(d)
+}
+
+daa<-cbind(e,trans(zzzz[,1:42]))
+dsa<-daa[-which(is.na(daa[,1])),]
+dsaa<-cbind(dsa[,1],standard(dsa[,2:43]))
